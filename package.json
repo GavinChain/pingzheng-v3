@@ -16,6 +16,7 @@
     "vue": "^3.0.0"
   },
   "devDependencies": {
+    "@babel/preset-typescript": "^7.13.0",
     "@babel/eslint-parser": "^7.13.14",
     "@babel/plugin-syntax-top-level-await": "^7.12.13",
     "@vue/cli-plugin-babel": "~4.5.0",
@@ -39,6 +40,9 @@
     ],
     "parserOptions": {
       "parser": "@babel/eslint-parser"
+    },
+    "rules": {
+      "no-unused-vars": "off"
     }
   },
   "browserslist": [

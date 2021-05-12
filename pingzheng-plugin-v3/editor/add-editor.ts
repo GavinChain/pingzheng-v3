@@ -11,7 +11,7 @@ const pingZhengApiStore = usePingZhengApiWidthOut();
 const pingZhengModelStore = usePingZhengModelStoreWidthOut();
 const zhaiYaoStore = useZhaiYaoStoreWidthOut();
 
-export default async function({zhiDanRen, zhaiyaoApi, kuaiJiKeMuApi, okApi, backApi, model}: any) {
+export default async function({zhiDanRen, zhaiyaoApi, kuaiJiKeMuApi, okApi, backApi, model}) {
     pingZhengApiStore.zhaiyaoApi = zhaiyaoApi;
     pingZhengApiStore.kuaiJiKeMuApi = kuaiJiKeMuApi;
     pingZhengApiStore.okApi = okApi;
