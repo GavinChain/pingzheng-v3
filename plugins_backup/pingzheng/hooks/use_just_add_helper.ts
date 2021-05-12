@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 // @ts-nocheck
 import pingzhengHelper from '../helper/pingzhengHelper';
 import {queryFuZhuHeSuanApi} from '../api/fu_zhu_he_suan';

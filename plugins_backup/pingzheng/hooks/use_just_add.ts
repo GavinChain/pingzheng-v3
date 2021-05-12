@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 // @ts-nocheck
 import {createDom} from '../../boozjs-lang/dom';
 

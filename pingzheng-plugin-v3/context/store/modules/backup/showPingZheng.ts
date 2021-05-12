@@ -1,4 +1,4 @@
-// /* eslint-disable @typescript-eslint/ban-ts-comment */
+// 
 // /* eslint-disable */
 // import {Action, getModule, Module, Mutation, VuexModule} from 'vuex-module-decorators';
 // import {store} from '../index';

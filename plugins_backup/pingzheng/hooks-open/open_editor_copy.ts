@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 // @ts-nocheck
 export const openEditorChongxiao = (pingZhengNum) => {
   getPingZhengModelByPingZhengNum({pingZhengNum, title: '冲销凭证'})

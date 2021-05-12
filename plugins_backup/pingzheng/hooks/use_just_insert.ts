@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 // @ts-nocheck
 import Vue from '../../boozjs-vue/2.x.js';
 import {queryFuZhuHeSuanApi} from '../api/fu_zhu_he_suan';

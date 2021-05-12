@@ -3,7 +3,7 @@
 </template>
 <script setup>
 import {getCurrentInstance, watch,h, onMounted, ref, render, useContext} from 'vue';
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 // @ts-nocheck
 import './money_grid.css';
 
@@ -17,12 +17,12 @@ function formatMoneyAPI(moneyStr) {
   moneyStr = String(moneyStr);
   moneyStr = moneyStr == null ? '' : moneyStr;
   if (moneyStr == 0) moneyStr = '';
-  if (moneyStr.split('\.').length > 1 && moneyStr.split('\.')[1] == 0) {
-    moneyStr = moneyStr.split('\.')[0];
+  if (moneyStr.split('.').length > 1 && moneyStr.split('.')[1] == 0) {
+    moneyStr = moneyStr.split( '\\.')[0];
   }
-  moneyStr = String(moneyStr).split('\.');
+  moneyStr = String(moneyStr).split('\\.');
   if (moneyStr.length > 1) {
-    var empty = [];
+    let empty = [];
     if (parseInt(moneyStr[0]) < 0) {
       moneyStr[0] = moneyStr[0].substring(1, moneyStr[0].length);
     }
@@ -39,11 +39,11 @@ function formatMoneyAPI(moneyStr) {
     }
     moneyStr = empty.concat(num.concat(float));
   } else {
-    var empty = [];
+    let empty = [];
     if (parseInt(moneyStr[0]) < 0) {
       moneyStr[0] = moneyStr[0].substring(1, moneyStr[0].length);
     }
-    var num = moneyStr[0].split('');
+    let num = moneyStr[0].split('');
     if (num[num.length - 1] == '\n') {
       num.pop();
     }

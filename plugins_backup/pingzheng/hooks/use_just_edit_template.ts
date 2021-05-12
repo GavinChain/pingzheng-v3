@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 // @ts-nocheck
 import Qs from 'qs'
 import Vue from '../../boozjs-vue/2.x.js';

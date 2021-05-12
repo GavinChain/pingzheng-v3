@@ -1,4 +1,4 @@
-// /* eslint-disable @typescript-eslint/ban-ts-comment */
+// 
 // /* eslint-disable */
 // import {Action, getModule, Module, VuexModule} from 'vuex-module-decorators';
 //

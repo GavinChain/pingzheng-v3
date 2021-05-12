@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 // @ts-nocheck
 import('../pingzheng');
 import pingzheng from './pingzheng';

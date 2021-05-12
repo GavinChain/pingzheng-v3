@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 /* eslint-disable */
 // @ts-nocheck
 // 新增凭证

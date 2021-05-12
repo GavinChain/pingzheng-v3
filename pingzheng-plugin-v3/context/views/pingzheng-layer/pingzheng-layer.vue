@@ -8,7 +8,7 @@
 </template>
 <script setup>
 import {onMounted, ref} from 'vue';
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 /* eslint-disable */
 import '../../assets/styles/skin.css'
 // @ts-nocheck

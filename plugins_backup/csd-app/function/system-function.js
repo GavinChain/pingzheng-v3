@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 /* eslint-disable */
 // @ts-nocheck
 import $ from '../../boozjs-jquery/boozjs-jquery';

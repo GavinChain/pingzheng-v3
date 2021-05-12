@@ -1,5 +1,5 @@
 /* eslint-disable */
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 
 // @ts-nocheck
 let scriptRel;

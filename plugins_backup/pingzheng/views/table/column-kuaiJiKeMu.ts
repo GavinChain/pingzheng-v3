@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 // @ts-nocheck
 // import {useCssLoad} from '../../../require-css/index';
 // useCssLoad(import.meta.url).loadCss([

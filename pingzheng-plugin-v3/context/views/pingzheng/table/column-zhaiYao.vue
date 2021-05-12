@@ -44,7 +44,7 @@ const pingZhengDomStore = usePingzhengDomStoreWidthOut();
 import {useZhaiYaoStoreWidthOut} from '../../../store/modules/zhaiYao';
 import {checkEnter} from '../../../util/key';
 import {usePingZhengModelStoreWidthOut} from '../../../store/modules/pingZhengModel';
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 // @ts-nocheck
 // import {useCssLoad} from '../../../require-css/index';
 // useCssLoad(import.meta.url).loadCss([

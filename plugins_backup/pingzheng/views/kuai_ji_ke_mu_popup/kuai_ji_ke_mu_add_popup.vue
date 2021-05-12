@@ -1,5 +1,5 @@
 <script setup>
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 /* eslint-disable */
 // @ts-nocheck
 // import {useTextLoad} from '../../../require-text/index';

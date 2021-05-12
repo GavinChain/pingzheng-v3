@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 // @ts-nocheck
 export    function createBtnGroupModel({saveBtnName, cancelBtnName}) {
         if (saveBtnName == null) {

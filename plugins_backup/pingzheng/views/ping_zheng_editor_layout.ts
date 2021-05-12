@@ -1,4 +1,4 @@
-// /* eslint-disable @typescript-eslint/ban-ts-comment */
+// 
 // // @ts-nocheck
 // import Vuex from '../../boozjs-vuex/3.x';
 // import {openPrintPopup, singlePrintBoot} from '../views/print/print_popup';

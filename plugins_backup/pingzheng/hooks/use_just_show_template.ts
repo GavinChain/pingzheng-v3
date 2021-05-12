@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 // @ts-nocheck
 import Vue from '../../boozjs-vue/2.x.js';
 import Vuex from '../../boozjs-vuex/3.x';

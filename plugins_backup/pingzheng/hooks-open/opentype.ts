@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 /* eslint-disable */
 // @ts-nocheck
 // const addPingZhengState=require('pingzheng/store/modules/template/addPingZheng').store
