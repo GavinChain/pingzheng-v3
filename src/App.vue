@@ -4,7 +4,7 @@
 </template>
 <script setup>
 
-const {openAddPingZheng, openShowPingZheng} = await import( '../lib/open-type');
+const {openAddPingZheng, openShowPingZheng} = await import( './plugins/pingzheng');
 
 openAddPingZheng();
 // import {createApp} from 'vue';

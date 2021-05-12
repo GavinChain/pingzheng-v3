@@ -1,3 +1,4 @@
+import './layer.css'
 /* eslint-disable */
 
 
@@ -6905,7 +6906,5 @@ ready.run = function(_$) {
   };
 };
 ready.run(jquery);
-__vitePreload(() => import("./layer"), true ? void 0 : void 0).then((res) => {
-  document.head.insertAdjacentHTML("afterEnd", `<style>${res.default}</style>`);
-});
+
 export default layer;

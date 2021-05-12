@@ -18,7 +18,7 @@ async function print({year, jiCiQuJian, zhiBiaoRen, queryKuaiJiKeMuList}) {
     zhiBiaoRen: '',
     queryListParam
   });
-};
+}
 
 
 async function printAll({year, jiCiQuJian, zhiBiaoRen}) {

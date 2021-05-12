@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "lint:js": "eslint --ext .js,.vue --ignore-path .gitignore plugins_backup . --fix ",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
@@ -16,9 +17,9 @@
     "vue": "^3.0.0"
   },
   "devDependencies": {
-    "@babel/preset-typescript": "^7.13.0",
-    "@babel/eslint-parser": "^7.13.14",
     "@babel/plugin-syntax-top-level-await": "^7.12.13",
+    "@babel/preset-typescript": "^7.13.0",
+    "@vue/babel-plugin-jsx": "^1.0.6",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-plugin-typescript": "~4.5.0",
@@ -30,18 +31,17 @@
     "typescript": "~4.1.5"
   },
   "eslintConfig": {
-    "root": true,
+    "root": false,
     "env": {
-      "node": true
+      "node": false
     },
     "extends": [
       "plugin:vue/vue3-essential",
       "eslint:recommended"
     ],
-    "parserOptions": {
-      "parser": "@babel/eslint-parser"
-    },
+    "parserOptions": {},
     "rules": {
+      "vue/require-v-for-key": "off",
       "no-unused-vars": "off"
     }
   },

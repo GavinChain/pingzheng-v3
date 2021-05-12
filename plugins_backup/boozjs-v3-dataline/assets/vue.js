@@ -2121,7 +2121,7 @@ export default (function (exports) {
       if (true &&
           result.patchFlag > 0 &&
           result.patchFlag & 2048 /* DEV_ROOT_FRAGMENT */) {
-        ;
+        
         [root, setRoot] = getChildRoot(result);
       }
       if (Component.inheritAttrs !== false && fallthroughAttrs) {
