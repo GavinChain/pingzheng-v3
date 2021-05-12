@@ -22,6 +22,14 @@ export function openAddPingZheng() {
     const backApi = async () => {
         return []
     };
+
+    const fuZhuHeSuanApi = async () => {
+        return {
+            dept:()=>{
+                return null
+            }
+        }
+    };
     // const fuZhuHeSuanApi = async () => {
     //     return []
     // };

@@ -12,12 +12,15 @@ interface FuZhuHeSuanState {
 export const useFuZhuHeSuanStore = defineStore({
     id: 'fuZhuHesuan',
     state: () :any => ({
-        fuZhuHeSuan:{
-
+        fuZhuHeSuanApi:{
+                test:()=>{return []}
         },
     }),
 
     actions: {
+        getThisList(type:string){
+            return this.fuZhuHeSuan[type]
+        }
        // getFuZhuHeSuan(){
        //
        // }

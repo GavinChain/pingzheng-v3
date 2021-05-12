@@ -16,6 +16,7 @@
     "vue": "^3.0.0"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.13.14",
     "@babel/plugin-syntax-top-level-await": "^7.12.13",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
@@ -28,6 +29,7 @@
     "typescript": "~4.1.5"
   },
   "eslintConfig": {
+    "parser": "@babel/eslint-parser",
     "root": true,
     "env": {
       "node": true
@@ -38,8 +40,7 @@
     ],
     "parserOptions": {
       "parser": "babel-eslint"
-    },
-    "rules": {}
+    }
   },
   "browserslist": [
     "> 1%",

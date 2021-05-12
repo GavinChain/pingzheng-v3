@@ -25,7 +25,7 @@ export async function castFuZhuHeSuanHtml(row) {
         const item=list[i]
         if(item==null)continue
         if (item.key == 'fzDept') {
-            const deptList=await fuZhuHeSuanMuStore.getDeptList()
+            const deptList=await fuZhuHeSuanMuStore.getThisList('dept')
             let inputValue = '';
 
             if (item.inputValue != '') {
