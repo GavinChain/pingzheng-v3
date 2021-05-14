@@ -1,6 +1,5 @@
 import {defineStore} from 'pinia';
-import {reactive} from 'vue';
-import {watchPingZhengModel} from '../../watch/pingzheng-model-watch';
+import {reactive, ref, watch} from 'vue';
 import {store} from '../index';
 import {usePingZhengApiWidthOut} from './pingZhengApi';
 import type {PingZhengModel, PingZhengRowHover} from './types/PingZhengModel';
@@ -30,35 +29,56 @@ export const usePingZhengModelStore = defineStore({
                 'zdr': 1,
                 'pingZhengNumOfMonth': '028'
             },
-            'rows': [{
-                'zhaiYao': '1',
-                'kuaiJiKeMuCode': '',
-                'kuaiJiKeMuFullName': '',
-                'jieMoney': '0.00',
-                'daiMoney': '0.00',
-                'kuaiJiKeMuPath': ''
-            }, {
-                'zhaiYao': '2',
-                'kuaiJiKeMuCode': '',
-                'kuaiJiKeMuFullName': '',
-                'jieMoney': '0.00',
-                'daiMoney': '0.00',
-                'kuaiJiKeMuPath': ''
-            }, {
-                'zhaiYao': '3',
-                'kuaiJiKeMuCode': '',
-                'kuaiJiKeMuFullName': '',
-                'jieMoney': '0.00',
-                'daiMoney': '0.00',
-                'kuaiJiKeMuPath': ''
-            }, {
-                'zhaiYao': '4',
-                'kuaiJiKeMuCode': '',
-                'kuaiJiKeMuFullName': '',
-                'jieMoney': '0.00',
-                'daiMoney': '0.00',
-                'kuaiJiKeMuPath': ''
-            }]
+            'rows': [
+                {
+                    data: {
+                        'zhaiYao': '1',
+                        'kuaiJiKeMuCode': '',
+                        'kuaiJiKeMuFullName': '',
+                        'jieMoney': '0.00',
+                        'daiMoney': '0.00',
+                        'kuaiJiKeMuPath': ''
+                    },
+                    hover: false,
+                    fuZhuHeSuan: []
+                },
+                {
+                    data: {
+                        'zhaiYao': '1',
+                        'kuaiJiKeMuCode': '',
+                        'kuaiJiKeMuFullName': '',
+                        'jieMoney': '0.00',
+                        'daiMoney': '0.00',
+                        'kuaiJiKeMuPath': ''
+                    },
+                    hover: false,
+                    fuZhuHeSuan: []
+                },
+                {
+                    data: {
+                        'zhaiYao': '1',
+                        'kuaiJiKeMuCode': '',
+                        'kuaiJiKeMuFullName': '',
+                        'jieMoney': '0.00',
+                        'daiMoney': '0.00',
+                        'kuaiJiKeMuPath': ''
+                    },
+                    hover: false,
+                    fuZhuHeSuan: []
+                },
+                {
+                    data: {
+                        'zhaiYao': '1',
+                        'kuaiJiKeMuCode': '',
+                        'kuaiJiKeMuFullName': '',
+                        'jieMoney': '0.00',
+                        'daiMoney': '0.00',
+                        'kuaiJiKeMuPath': ''
+                    },
+                    hover: false,
+                    fuZhuHeSuan: []
+                }
+            ]
         },
         fuZhuHeSuanApiList: {},
         pingZhengRowHover: [
@@ -68,10 +88,10 @@ export const usePingZhengModelStore = defineStore({
             false
         ],
         rowListFuZhuHeSuan: [
-            {name: '准备中..', value: '', text: ''},
-            {name: '准备中..', value: '', text: ''},
-            {name: '准备中..', value: '', text: ''},
-            {name: '准备中..', value: '', text: ''}
+            [],
+            [],
+            [],
+            []
         ]
     }),
     getters: {
@@ -98,25 +118,86 @@ export const usePingZhengModelStore = defineStore({
 
     actions: {
 
-        commitPingZhengModel(pingZhengModel: any): void {
-            this.pingZhengModel = pingZhengModel;
-            watchPingZhengModel(this.pingZhengModel);
+        createInstanceRow(requireRow) {
+            const instanceRow = {
+                state:reactive({
+                        data: requireRow,
+                        zhiYaoGridRef:{},
+                        kuaiJiKemuGridRef:{},
+                        fuZhuHeSuanGridRef:{},
+                        jieMoneyGirdRef:{},
+                        daiMoneyGirdRef:{},
+                        fuZhuHeSuan: [],
+                        hover: false,
+                }),
+                actions:{
+                    commitZhaiYaoRef(ref){
+                        instanceRow.state.zhiYaoGridRef=ref
+                    },
+                    commitKuaiJiKemuGridRef(ref){
+                        instanceRow.state.kuaiJiKemuGridRef=ref
+                    },
+                    commitFuZhuHeSuanRef(ref){
+                        instanceRow.state.fuZhuHeSuanGridRef=ref
+                    },
+                    commitJieMoneyGridRef(ref){
+                        instanceRow.state.jieMoneyGirdRef=ref
+                    },
+                    commitDaiMoneyGridRef(ref){
+                        instanceRow.state.daiMoneyGirdRef=ref
+                    },
+                    focusFuZhuHeSuan(){
+
+                    }
+                }
+            };
+            function kuaiJiKeMuChange(){
+                alert(1)
+            }
+
+            watch(instanceRow.state.data,(newVal,oldVal)=>{
+                console.log(1111);
+                if(newVal.kuaiJiKeMuCode!=oldVal.kuaiJiKeMuCode){
+                    kuaiJiKeMuChange()
+                }
+            })
+            return {
+                ...instanceRow.state.data,
+                ...instanceRow.state,
+                ...instanceRow.actions
+            };
+        },
+        async commitPingZhengModel(pingZhengModel: any) {
+            const thisStore = usePingZhengModelStoreWidthOut();
+            thisStore.pingZhengModel = pingZhengModel;
+            // const {watchPingZhengModel} = await import('../../watch/pingzheng-model-watch');
+
+            // watchPingZhengModel(reactive(thisStore.pingZhengModel));
         },
         commitRowZhaiYao({rowIndex, zhaiYao}: { rowIndex: number, zhaiYao: string }): void {
             const a = JSON.parse(JSON.stringify(this.pingZhengModel));
             a.rows[rowIndex].zhaiYao = zhaiYao;
             this.pingZhengModel = a;
         },
+        commitRowListFuZhuHeSuan(rowListFuZhuHeSuan) {
+            this.rowListFuZhuHeSuan = rowListFuZhuHeSuan;
+        },
         async syncRowListFuZhuHeSuan() {
-
-            this.rowListFuZhuHeSuan = this.pingZhengModel.rows.map(row => {
-                let fuZhuHeSuan = reactive([]);
-                pingZhengApiStore.getFuZhuHeSuanColumnsNameApi(row.kuaiJiKeMuCode).then(res => {
-                    Object.assign(fuZhuHeSuan,res)
-                });
-                return fuZhuHeSuan
-            });
-
+            const rowsFuZheHeSuan: any = [
+                [],
+                [],
+                [],
+                []
+            ];
+            let i = 0;
+            for (let row of this.pingZhengModel.rows) {
+                let fuZhuHeSuan = [];
+                if (row.kuaiJiKeMuCode != '') {
+                    const newFuZhuHeSuan = await pingZhengApiStore.getFuZhuHeSuanColumnsNameApi(row.kuaiJiKeMuCode);
+                    rowsFuZheHeSuan[i++] = newFuZhuHeSuan;
+                }
+            }
+            this.commitRowListFuZhuHeSuan(rowsFuZheHeSuan);
         },
         syncRowListHover(): void {
             this.pingZhengRowHover = this.pingZhengModel.rows.map(item => false);

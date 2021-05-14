@@ -1,14 +1,7 @@
 <template>
-  <div>
-  </div>
+      <Home></Home>
 </template>
 <script setup>
+import Home from './view/Home'
 
-const {openAddPingZheng, openShowPingZheng} = await import( './plugins/pingzheng');
-
-openAddPingZheng();
-// import {createApp} from 'vue';
-// const div=document.createElement('div')
-// div.setAttribute('id','bbba')
-// createApp(BBB).mount('')
 </script>

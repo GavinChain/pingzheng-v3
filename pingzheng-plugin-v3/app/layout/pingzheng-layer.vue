@@ -16,20 +16,30 @@ import '../assets/styles/skin.css'
 import layer from '../util/boozjs-layer/boozjs-layer.es';
 
 const abc=ref(null)
+const layoutId=ref('')
+
 import jquery from 'jquery'
+import {useLayoutStoreWidthOut} from '../store/modules/layout';
 onMounted(()=>{
-  const id = layer.open({
+  const layoutStore=useLayoutStoreWidthOut()
+  layoutId.value = layer.open({
     type: 1,
     maxmin: true,
     skin: 'pingZhengTheme-default', //加上边框
     area: ['1300px', '705px'], //宽高
     content: jquery(abc.value),
     end: () => {
-      this.$store.state.close();
+      layoutStore.layoutCloseEvent()
     }
 
   });
+  function closeLayout(){
+    layer.close(layoutId.value)
+  }
+
+  layoutStore.commitLayoutCloseEvent(closeLayout)
 })
+
 // import $ from 'jquery';
 // // useCssLoad(import.meta.url).loadCss(['skin.css']);
 

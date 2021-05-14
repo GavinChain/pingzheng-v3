@@ -1,6 +1,6 @@
 <template>
 <!--   凭证表格页 -->
-  <div class="addKmPage" style="clear:both;margin:0 auto">
+  <div ref="addKmPage" class="addKmPage" style="clear:both;margin:0 auto">
     <div id="choose-box-wrapper4" style="display: none">
       <div class="widget flat radius-bordered" style="padding:0 10px 0;">
         <div  id="helpContent" style="width: 755px;height: 276px;overflow:auto;"/>
@@ -47,7 +47,7 @@
                   onselectstart="return false;"
               >
                 <div
-                    v-show="pingZhengRowHover[i]"
+                    v-show="row.hover"
                     @click="addRowButton(i)"
                     style="    position: absolute;
     left: -49px;width:50px;height: 60px;"
@@ -61,7 +61,7 @@
             </li>
             <li class="col1">
               <ZhaiYaoGrid
-                  @ref="zhaiYaoGrid[i]=$event"
+                  @ref="row.commitZhaiYaoRef"
                   v-model="row.zhaiYao"
                   :abstracts="abstracts"
                   @change="focusKuaiJiKeMuGrid(i)"
@@ -69,7 +69,8 @@
             </li>
             <li class="col2">
               <KuaiJiKeMuGrid
-                  @ref="kuaiJiKeMuGrid[i]=$event"
+                  @ref="row.commitKuaiJiKemuGridRef"
+
                   v-if="subs.length"
                   :val="row.kuaiJiKeMuText"
                   :update-page="updatePage"
@@ -77,113 +78,27 @@
                   :assist-val="assist[i]"
                   :iyear="iyear"
                   :subs="subs"
-                  @kuaiJiKeMuChange="kuaiJiKeMuChange(i,$event)"
+                  @blur="kuaiJiKeMuChangeBlur(row)"
+                  @kuaiJiKeMuChange="kuaiJiKeMuChange(row,$event)"
               />
             </li>
 
-            <li
-
-                class="col3"
-                style=""
-            >
-              <FuZhuHeSuanGrid v-model="pingZhengModelStore.getRowListFuZhuHeSuan[i]"></FuZhuHeSuanGrid>
-<!--              <el-popover-->
-<!--                  placement="bottom"-->
-<!--                  title="标题"-->
-<!--                  :width="200"-->
-<!--                  trigger="click"-->
-<!--              >-->
-<!--              <div>-->
-<!--                <FuZhuHeSuanPopup-->
-<!--                    ref="fuZhuHeSuanPopup"-->
-<!--                    @ok="setTimeout(()=>focusTextEditor($refs['jGrid' + i][0].parentElement),500)"-->
-<!--                    v-model="pingZhengModelStore.getRowListRequireFuZhuHeSuan[i].value"-->
-<!--                />-->
-<!--              </div>-->
-<!--                <template #reference>-->
-<!--                  <div style="width:200px;height:60px">-->
-<!--                    <FuZhuHeSuanHtml @ref="fuZhuHeSuanHtml[i]=$event">{{pingZhengModelStore.getRowListFuZhuHeSuanHtml[i]}}</FuZhuHeSuanHtml>-->
-<!--                  </div>-->
-<!--                </template>-->
-<!--              </el-popover>-->
-<!--                            <el-popover-->
-<!--                                popper-class="fuzhuhesuan_popover"-->
-<!--                                placement="bottom"-->
-<!--                                title="需要辅助核算"-->
-<!--                                @show="$refs['fuZhuHeSuanPopup'][i].focusFirstFuZhuHeSuanSelect()"-->
-<!--                                trigger="click"-->
-<!--                            >-->
-<!--                              <fuZhuHeSuanPopup-->
-<!--                                  ref="fuZhuHeSuanPopup"-->
-<!--                                  @ok="setTimeout(()=>focusTextEditor($refs['jGrid' + i][0].parentElement),500)"-->
-<!--                                  v-model="pingZhengModelStore.getPingZhengModel.rows[i]"-->
-<!--                              />-->
-<!--                              <div-->
-<!--                                  slot="reference"-->
-<!--                                  style="height:100%"-->
-<!--                              >-->
-<!--                                <fuZhuHeSuanHtml-->
-<!--                                    ref="fuZhuHeSuanHtml"-->
-<!--                                    :value="castFuZhuHeSuanHtml(row)"-->
-<!--                                />-->
-<!--                              </div>-->
-<!--                            </el-popover>-->
+            <li class="col3" style="" >
+              <FuZhuHeSuanGrid   @ref="row.commitFuZhuHeSuanRef" v-model="row.fuZhuHeSuan"></FuZhuHeSuanGrid>
             </li>
             <li class="col4"/>
-            <li
-                class="col-jie"
-                style="position: relative"
-            >
+            <li class="col-jie" style="position: relative">
               <JieMoneyGrid v-model="row.jieMoney"
-                            @ref="jGrid[i]=$event"
+                            @ref="row.commitJieMoneyGridRef"
                             @money-change="dGrid[i].setupState.focus()"
                             @input="row.daiMoney='0.00'"/>
             </li>
-
-            <!--            <li-->
-            <!--                :ref="(el) =>jGrid[i]=el"-->
-            <!--                class="col-jie"-->
-            <!--                style="position: relative"-->
-            <!--            >-->
-            <!--              <textarea-->
-            <!--                  onkeydown="checkEnter(event)"-->
-            <!--                  @blur="row.jieMoney=row.jieMoney==''?'0.00':row.jieMoney,row.jieMoney!=0?clearRightVal($event.target):'',keyUpSetVal($event.target,'jieMoney'),formatMoney($event.target,'jieMoney'),rowsWatch(pingZhengModelStore.getPingZhengModel.rows)"-->
-            <!--                  class="textx"-->
-            <!--                  v-model="row.jieMoney"-->
-            <!--                  @input="jieDaiInputHandle(i,'jieMoney',$event.target)"-->
-            <!--                  @keyup.enter.stop="row.jieMoney==''||row.jieMoney=='0.00'?colFeedJ($event.target):lineFeed(i,row.zhaiYao)"-->
-            <!--                  style="box-sizing:border-box;display:none;height:60px !important;line-height: 50px"-->
-            <!--              />-->
-            <!--              <MoneyGrid @click="focusTextEditor($event,jGrid[i])">-->
-            <!--                {{ row.jieMoney }}-->
-            <!--              </MoneyGrid>-->
-            <!--            </li>-->
-            <li
-                class="col-dai"
-                style="position: relative"
-            >
+            <li class="col-dai" style="position: relative">
               <DaiMoneyGrid v-model="row.daiMoney"
                             :equals-event="()=>15"
-                            @ref="dGrid[i]=$event"
+                            @ref="row.commitDaiMoneyGridRef"
                             @money-change="zhaiYaoGrid[i+1]!=null?zhaiYaoGrid[i+1].setupState.focus():''"
                             @input="clearRightVal"/>
-<!--              <JieMoneyGrid v-model="row.jieMoney"-->
-<!--                            @ref="jGrid[i]=$event"-->
-<!--                            @change="jieMoneyGridChange"-->
-<!--                            @input="clearRightVal"/>-->
-<!--              <textarea-->
-<!--                  :ref="(el) =>dGrid[i]=el"-->
-<!--                  v-model="row.daiMoney"-->
-<!--                  @blur="row.daiMoney=row.daiMoney==''?'0.00':row.daiMoney,row.daiMoney!=0?clearLeftVal($event.target):'',keyUpSetVal($event.target,'daiMoney'),row.daiMoney=parseFloat(row.daiMoney).toFixed(2),rowsWatch(pingZhengModelStore.getPingZhengModel.rows)"-->
-<!--                  onkeydown="checkEnter(event)"-->
-<!--                  @input="jieDaiInputHandle(i,'daiMoney',$event.target)"-->
-<!--                  @keyup.enter="lineFeed(i,row.zhaiYao)"-->
-<!--                  class="textx"-->
-<!--                  style="box-sizing:border-box;display:none;height:60px !important;line-height: 50px"-->
-<!--              />-->
-<!--              <money-grid @click="focusTextEditor($event,dGrid[i])">-->
-<!--                {{ row.daiMoney }}-->
-<!--              </money-grid>-->
             </li>
               <div
                   style="width:0;padding:0;display:block;border:0;position:absolute;right: 0;-moz-user-select:none;"
@@ -265,8 +180,6 @@ import ZhaiYaoGrid from './table/column-zhaiYao.vue'
 import KuaiJiKeMuGrid from './table/column-kuaiJiKeMu.vue'
 import JieMoneyGrid from './table/column-money-grid.vue'
 import DaiMoneyGrid from './table/column-money-grid.vue'
-import FuZhuHeSuanPopup from './fu_zhu_he_suan_popup/fu_zhu_he_suan_popup.vue'
-import FuZhuHeSuanHtml from './fu_zhu_he_suan_popup/fu_zhu_he_suan_html.vue'
 import {createPingZhengRowModel} from '../helper/pingzhengHelper';
 import {usePingZhengApiWidthOut} from '../store/modules/pingZhengApi';
 import {useFuZhuHeSuanStoreWidthOut} from '../store/modules/fuZhuHeSuan';
@@ -303,9 +216,9 @@ watch(pingZhengModelStore.getPingZhengModel.rows, (newVal) => {
 
     // this.billSubjectMoneys[newVal[i].kuaiJiKeMuText.split(" ")[0]]['j'] += parseFloat(j.toFixed(2))
     // this.billSubjectMoneys[newVal[i].kuaiJiKeMuText.split(" ")[0]]['d'] += parseFloat(d.toFixed(2))
-    thisJieTotalAmount = accAdd(thisJieTotalAmount, newVal[i].jieMoney);
+    thisJieTotalAmount = accAdd(thisJieTotalAmount, newVal[i].data.jieMoney);
     formatMoneyAPI(String(thisJieTotalAmount));
-    thisDaiTotalAmount = accAdd(thisDaiTotalAmount, newVal[i].daiMoney);
+    thisDaiTotalAmount = accAdd(thisDaiTotalAmount, newVal[i].data.daiMoney);
   }
   if (thisJieTotalAmount == 0) {
     thisChineseTotalAmount = '零元整';
@@ -353,22 +266,26 @@ const voucherDrafts = [];
 const showPageAddKM = false;              // 显示科目页
 const showPage = true;
 const isFuZhuHeSuan = computed(()=>{
-    return pingZhengModelStore.getRowListFuZhuHeSuan.filter(item => {
-      return Object.keys(item).length>0
-          // // 部门
-          // return item.fzDept != null ||
-          //     // 个人往来
-          //     item.fzEmp != null ||
-          //     // 客户
-          //     item.fzCustomer != null ||
-          //     // 供应商
-          //     item.fzSupplier != null ||
-          //     // 存货
-          //     item.fzCunHuo != null ||
-          //     // 项目
-          //     item.fzXiangMuMulu != null;
-        }
-    ).length > 0;
+  // // 部门
+  // return item.fzDept != null ||
+  //     // 个人往来
+  //     item.fzEmp != null ||
+  //     // 客户
+  //     item.fzCustomer != null ||
+  //     // 供应商
+  //     item.fzSupplier != null ||
+  //     // 存货
+  //     item.fzCunHuo != null ||
+  //     // 项目
+  //     item.fzXiangMuMulu != null;
+  const rowListFuZhuHeSuan=pingZhengModelStore.getRowListFuZhuHeSuan
+  const rowFuZhuHeSuanFilter=(rowFuZhuHeSuan)=>rowFuZhuHeSuan.length!=0
+  return rowListFuZhuHeSuan.filter(rowFuZhuHeSuanFilter).length>0
+  // const fuZhuHeSuan=pingZhengModelStore.getRowListFuZhuHeSuan.filter(item => {
+  //
+  //
+  // })
+  //   return fuZhuHeSuan.length > 0;
 });
 const tableWidth = {
   'zhaiYao': 220,
@@ -492,15 +409,15 @@ async function castFuZhuHeSuanHtml(row) {
       return strList.join('<br>');
 }
 
-async function fuZhuHeSuanHandle(pingZhengRow) {
+async function fuZhuHeSuanHandle(rowData,fuZhuHeSuan) {
   const {queryCcodeInfo}=pingZhengApiStore
-  clearFuZhuHeSuan(pingZhengRow);
+  clearFuZhuHeSuan(fuZhuHeSuan);
   const year=pingZhengModelStore.getPingZhengModel.props.date.split('-')[0]
-  const kuaiJiKeMuCode=pingZhengRow.kuaiJiKeMuCode
-  const rowDatafuZhuHeSuanColumnsApiData = await queryCcodeInfo({year,kuaiJiKeMuCode});
+  const kuaiJiKeMuCode=rowData.kuaiJiKeMuCode
+  // const rowDatafuZhuHeSuanColumnsApiData = await queryCcodeInfo({year,kuaiJiKeMuCode});
 
   // 合并当前行辅助核算
-  assignFuZuHeSuan(pingZhengRow,rowDatafuZhuHeSuanColumnsApiData)
+  // assignFuZuHeSuan(rowData,rowDatafuZhuHeSuanColumnsApiData)
 }
 
 // 借贷余额计算
@@ -748,6 +665,7 @@ const jGrid=ref([])
 const dGrid=ref([])
 const zhaiYaoGrid=ref([])
 const kuaiJiKeMuGrid=ref([])
+const fuZheHeSuanGrid=ref([])
 
 // // 确保在每次变更之前重置引用
 // onBeforeUpdate(()=>{
@@ -1671,13 +1589,12 @@ function focusFuZhuHeSuan(rowIndex) {
 
   // fuZhuHeSuanHtml.value[rowIndex].vnode.el.click();
 }
-async function kuaiJiKeMuChange(rowIndex, kuaiJiKeMuText) {
-  const row = pingZhengModelStore.getPingZhengModel.rows[rowIndex];
-  row['kuaiJiKeMuText'] = kuaiJiKeMuText;
-  row['kuaiJiKeMuCode'] = kuaiJiKeMuText.split(' ')[0];
-  await fuZhuHeSuanHandle(row);
-  const rowFuZhuHeSuanModel = fuZhuHeSuanModel(row);
-  rowFuZhuHeSuanModelSsFuZhuHeSuan(rowFuZhuHeSuanModel) ? focusFuZhuHeSuan(rowIndex) : focusJieMoneyGrid(rowIndex);
+async function kuaiJiKeMuChange(row, kuaiJiKeMuText) {
+  // row.data['kuaiJiKeMuText'] = kuaiJiKeMuText;
+  // row.data['kuaiJiKeMuCode'] = kuaiJiKeMuText.split(' ')[0];
+  // await fuZhuHeSuanHandle(row.data,row.fuZhuHeSuan);
+  // const rowFuZhuHeSuanModel = fuZhuHeSuanModel(row.fuZhuHeSuan);
+  // rowFuZhuHeSuanModelSsFuZhuHeSuan(rowFuZhuHeSuanModel) ? row.focusFuZhuHeSuan() : focusJieMoneyGrid(rowIndex);
 }
 
 function jieMoneyGridChange(){
@@ -1701,9 +1618,15 @@ function deleteRowButton(i){
 watch(pingZhengModelStore.getPingZhengModel,()=>pingZhengModelStore.syncRowListHover(),{immediate:true})
 
 
+function kuaiJiKeMuChangeBlur(i){
+  // setTimeout(()=>{
+  //   if(pingZhengModelStore.getRowListFuZhuHeSuan[i]!=0){
+  //     fuZheHeSuanGrid.value[i].setupState.focus()
+  //   }
+  // },500)
+
+}
 </script>
-<style src="../assets/styles/ping_zheng_editor_layout.css"/>
-<style src="../assets/styles/ping_zheng_editor_layout.less.css"/>
 <style scoped>
 
 #pageEditZoom {

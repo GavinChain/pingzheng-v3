@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { store } from '../index';
+import {usePingZhengPrintStoreWidthOut} from './pingzhengPrint';
 
 
 // @ts-ignore
@@ -27,15 +28,27 @@ export const usePingZhengApiStore = defineStore({
             alert('未定义');
         },
 
-        async okApi() {
-            alert('未定义');
+        okApiAndKeep({pingZhengModel}){
+            const thatOkContinueApi= usePingZhengApiWidthOut().getApi('okContinueApi')
+            thatOkContinueApi()
+        },
+        okApiAndContinue({pingZhengModel}){
+            const thatOkContinueApi= usePingZhengApiWidthOut().getApi('okContinueApi')
+            thatOkContinueApi()
         },
 
+        async okApi({pingZhengModel}) {
+            const thatOkApi= usePingZhengApiWidthOut().getApi('okApi')
+            thatOkApi({pingZhengModel})
+        },
+        async reloadApi() {
+            const reloadApi= usePingZhengApiWidthOut().getApi('reloadApi')
+        },
         async backApi() {
-            alert('未定义');
+            const reloadApi= usePingZhengApiWidthOut().getApi('backApi')
         },
         async getFuZhuHeSuanColumnsNameApi(kuaiJiKeMuCode) {
-            const thisStore=usePingZhengApiStore(store)
+            const thisStore=usePingZhengApiWidthOut()
             return await thisStore.getApi('getFuZhuHeSuanColumnsNameApi')(kuaiJiKeMuCode)
         },
 

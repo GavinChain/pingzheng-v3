@@ -1,29 +1,27 @@
-import AddEditor from './editor/add-editor'
+
 export default async function({
+                                  btnShowList={},
                                   fuZhuHeSuanApiList,
                                   getFuZhuHeSuanColumnsNameApi,
-                                  uZhuHeSuanApiList,
                                   typeListApi,
                                   numApi,
                                   zhiDanRen,
                                   zhaiyaoApi,
                                   kuaiJiKeMuApi,
-                                  okApi,
                                   backApi,
                                   queryVoucherDefaultDateApi
                               }: any) {
+    const  AddEditor=(await  import( './editor/add')).default
     const date = await queryVoucherDefaultDateApi();
-
+    // @ts-ignore
     AddEditor({
+        btnShowList,
         getFuZhuHeSuanColumnsNameApi,
         fuZhuHeSuanApiList,
         zhaiyaoApi,
         kuaiJiKeMuApi,
-        okApi(pingZhengModel, apiData, instance) {
-            console.log('pingZhengModel', pingZhengModel, '\napiData', apiData);
-        },
         backApi,
-        model: {
+        requstModel: {
             options: {
                 title: '新增凭证'
             },

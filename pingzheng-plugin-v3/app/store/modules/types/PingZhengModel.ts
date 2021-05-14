@@ -4,6 +4,7 @@ export interface PingZhengModel {
     rows
 }
 export interface PingZhengRowHover {
+    [x: string]: any;
 
 }
 export interface RowListFuZhuHeSuanHtml {

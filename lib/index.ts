@@ -1,10 +1,2 @@
-import {openAddPingZheng} from '../lib/open-type';
-
-export default {
-    abc() {
-        setTimeout(() => {
-            openAddPingZheng();
-        }, 500);
-
-    }
-};
+import {openAddPingZheng} from '@/view/pingzheng/pingzheng';
+openAddPingZheng({okApi:()=>{alert(1)}})

@@ -23,6 +23,9 @@ export const useKuaiJiKeMuStore = defineStore({
     actions: {
         commitKuaiJiKeMuList(kuaiJiKeMuList: any): void {
             this.kuaiJiKeMuList = kuaiJiKeMuList;
+        },
+        openAddKuaiJiKeMu(rowIndex){
+
         }
     },
 });

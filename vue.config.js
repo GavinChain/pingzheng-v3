@@ -1,13 +1,5 @@
-/* eslint-disable */
-// @ts-nocheck
-module.exports = {
-  lintOnSave:false,
+module.exports={
   publicPath:'./',
-  configureWebpack:{
-
-      output: {
-        libraryExport: 'default',
-      },
-
-  }
-};
+  lintOnSave:false,
+  parallel: false
+}

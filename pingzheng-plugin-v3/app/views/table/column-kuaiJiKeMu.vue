@@ -1,14 +1,16 @@
 <template>
   <div class="subGrid">
     <el-popover
-        placement="top-start"
-        title="标题"
-        :width="200"
-        trigger="click"
-        content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。"
+        placement="bottom-start"
+        title="新增会计科目"
+        width="380px"
+        trigger="manual"
+        v-model:visible="showPopover"
     >
+      <addSubjectPage v-model="textareaVal" @ok="showPopover=false" @cancel="showPopover=false"/>
       <template #reference>
         <textarea
+            :class="isNotFind?'isNotFind':''"
             ref="subInput"
             v-model="textareaVal"
             @focus="textareaFocus"
@@ -43,7 +45,7 @@
           @click="showPageAddKM=true"
           style="box-shadow: rgb(59, 128, 169) 0px 1px 20px 0px inset;cursor:pointer;z-index:999999;margin-top:300px;background: rgb(40, 180, 164);font-weight:700;text-align: center;margin:0;padding:5px 0 0;width:416px;overflow-y: scroll;border-bottom:solid 1px grey;height:30px;color:white;"
       >
-        <li @mousedown="$store.state.openAddKeMu(rowIndex)">
+        <li @mousedown="showPopover=true">
           新增科目
         </li>
       </ul>
@@ -55,12 +57,7 @@
     <!--            <span  :style="{'color':moneyComputed<0?'red':''}">{{moneyComputed}}</span>-->
     <!--            元-->
     <!--    </div>-->
-    <addSubjectPage
-        ref="addSubjectPage"
-        v-if="addSubjectPageShow"
-        @change="kuaiJiKeMuChange"
-        @cancel="subInput.focus(),addSubjectPageShow=false"
-    />
+
   </div>
 </template>
 <script setup>
@@ -74,9 +71,10 @@ import jquery from 'jquery'
 import {computed, defineProps, getCurrentInstance, nextTick, onMounted, ref, useContext, watch} from 'vue';
 import {useKuaiJiKeMuStoreWidthOut} from '../../store/modules/kuaiJiKeMu';
 const kuaiJiKeMuStore=useKuaiJiKeMuStoreWidthOut()
-import addSubjectPage from '../kuai_ji_ke_mu_popup/kuai_ji_ke_mu_add_popup'
+import addSubjectPage from './kuai_ji_ke_mu_popup/kuai_ji_ke_mu_add_popup'
 const kuaiJiKeMuList = computed(() => kuaiJiKeMuStore.getKuaiJiKeMuList);
 const dataList = ref(null);
+const showPopover=ref(false)
 const api = {
   // 检查是否需要辅助核算
   queryAssist() {
@@ -160,7 +158,7 @@ const openAssistSet = false;
 const money = 0;
 const orgin = 0;
 const assistTypes = {};
-
+const isNotFind=ref(false)
 //
 // const kuaiJiKeMuList=function() {
 //   let list = [];
@@ -305,6 +303,13 @@ function textareaKeyDown() {
 }
 
 function textareaBlur() {
+  emit('blur')
+  const length=kuaiJiKeMuList.value.filter(item=>textareaVal.value==item.ccode+' '+item.ccodename)
+  if(length==0){
+    isNotFind.value = true
+  }else{
+    isNotFind.value = false
+  }
   dataList.value.style.display = 'none';
   // nextTick(() => emit('kuaiJiKeMuChange', textareaVal.value));
 }
@@ -318,6 +323,12 @@ function ulLiClick(kuaiJiKeMu,e) {
 function focus(){
   subInput.value.focus()
 }
+
 emit('ref', getCurrentInstance());
 </script>
 <style src="./column-kuaiJiKeMu.css"></style>
+<style>
+.isNotFind{
+  color:red !important;
+}
+</style>

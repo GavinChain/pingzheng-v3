@@ -1,7 +1,5 @@
 import './layer.css'
 /* eslint-disable */
-
-
 // @ts-nocheck
 let scriptRel;
 const seen = {};
@@ -1003,3 +1001,4 @@ ready.run = function(_$) {
 };
 ready.run(jquery);
 export default layer;
+/* eslint-disable */

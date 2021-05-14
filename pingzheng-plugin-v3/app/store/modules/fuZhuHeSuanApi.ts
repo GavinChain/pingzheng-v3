@@ -33,7 +33,7 @@ export const useFuZhuHeSuanApiStore = defineStore({
                 // });
 
                 setTimeout(()=>{
-                    that.fuZhuHeSuanList[type]=[{id:'bu1',name:'技术部1'},{id:'bu12',name:'技术部2'},{id:'bu13',name:'技术部3'}]
+                    that.fuZhuHeSuanList[type]=[{id:'bu1',name:'技术部1',value:''},{id:'bu12',name:'技术部2',value:''},{id:'bu13',name:'技术部3',value:''}]
                 },1000)
             }
             return this.fuZhuHeSuanList[type];
