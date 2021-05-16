@@ -1,16 +1,16 @@
 <template>
-  <PingzhengLayer>
+  <PingzhengScreen>
     <PingZhengLayOut>
       <PingZhengTable></PingZhengTable>
       <template v-slot:bottomRightBtns>
         <div ref="bottomRightInstanceRef"></div>
       </template>
     </PingZhengLayOut>
-  </PingzhengLayer>
+  </PingzhengScreen>
 
 </template>
 <script setup>
-import PingzhengLayer from '../layout/pingzheng-layer';
+import PingzhengScreen from '../layout/pingzheng-screen';
 import PingZhengLayOut from './pingzheng_editor_layout';
 import PingZhengTable from './pingzheng_editor_table';
 import {defineProps, onMounted, ref, watch, unref, render, h, getCurrentInstance} from 'vue';

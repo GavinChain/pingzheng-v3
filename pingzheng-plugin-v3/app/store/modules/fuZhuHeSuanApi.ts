@@ -23,7 +23,7 @@ export const useFuZhuHeSuanApiStore = defineStore({
         getApi(type) {
             return this.api[type];
         },
-         getFuZhuHeSuanList(type) {
+         async getFuZhuHeSuanList(type) {
             const that=this
              // console.log(1);
             if (this.fuZhuHeSuanList[type] == null) {
@@ -32,9 +32,7 @@ export const useFuZhuHeSuanApiStore = defineStore({
                 //      this.fuZhuHeSuanList[type]=res
                 // });
 
-                setTimeout(()=>{
-                    that.fuZhuHeSuanList[type]=[{id:'bu1',name:'技术部1',value:''},{id:'bu12',name:'技术部2',value:''},{id:'bu13',name:'技术部3',value:''}]
-                },1000)
+                    that.fuZhuHeSuanList[type]=[{id:'bu1',name:'技术部1'},{id:'bu12',name:'技术部2'},{id:'bu13',name:'技术部3'}]
             }
             return this.fuZhuHeSuanList[type];
         }

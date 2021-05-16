@@ -1,13 +1,13 @@
 import {defineStore} from 'pinia';
-import {convertCurrency} from '../../../../plugins_backup/pingzheng/helper/jizhangHelper';
-import {initExportData} from '../../../../plugins_backup/pingzheng/views/print/print';
-import {
-    addThousands, openPrintPopup,
-    toDecimal2
-} from '../../../../plugins_backup/pingzheng/views/print/print_popup';
-import layer from '../../util/boozjs-layer/boozjs-layer.es';
+// import {convertCurrency} from '../../../../plugins_backup/pingzheng/helper/jizhangHelper';
+// import {
+//     addThousands, openPrintPopup,
+//     toDecimal2
+// } from '../../../../plugins_backup/pingzheng/views/print/print_popup';
 import {store} from '../index';
 import {usePingZhengModelStore, usePingZhengModelStoreWidthOut} from './pingZhengModel';
+import {addThousands, toDecimal2} from "../../views/print/print";
+import {convertCurrency} from "../../helper/jizhangHelper";
 
 
 // @ts-ignore

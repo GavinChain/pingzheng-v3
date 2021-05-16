@@ -24,7 +24,7 @@ import {
   defineComponent,
   defineProps,
   getCurrentInstance,
-  h,
+  h, nextTick,
   onMounted,
   reactive,
   ref,
@@ -32,139 +32,115 @@ import {
   useContext,
   watch
 } from 'vue';
-import {ElButton, ElInput,ElSelect} from 'element-plus';
+import {ElButton, ElInput,ElSelect,ElOption} from 'element-plus';
 import {useFuZhuHeSuanApiWidthOut} from '../../store/modules/fuZhuHeSuanApi';
 import {usePingZhengConfigStoreWidthOut} from '../../store/modules/pingZhengConfig';
-
-const props = defineProps(['modelValue']);
-const fuZhuHeSuanList=props.modelValue
-const colFuZhuHeSuan = ref();
-const abcasd = ref();
-let showPopover = ref(false);
-const instance = getCurrentInstance();
+import {createFuZhuHeSuanSelection} from "./column-fuZheHeSuan-store";
 const fuZheHeSuanApi = useFuZhuHeSuanApiWidthOut();
 
-function dataChange(fuZhuHeSuanList) {
-  showPopover.value = false;
-  instance.attrs['onUpdate:modelValue'](fuZhuHeSuanList);
-}
-//
-// function renderThis(modelValue) {
-//   if (modelValue == null) {
-//     return;
-//   }
-//   const fuZhuHeSuanList = reactive(JSON.parse(JSON.stringify(modelValue)));
-//   // setInterval(()=>{
-//   //   fuZhuHeSuanList[0].value=fuZhuHeSuanList[0].value+'1'
-//   // },1000)
-//
-//
-//   function ddd(e) {
-//     if (e.relatedTarget != null) {
-//       if (e.relatedTarget.closest('.fuzhuhesuan_popover_container') != null) {
-//         return;
-//       }
-//     }
-//     showPopover.value = false;
-//   }
-//
-//   // setInterval(()=>{
-//   //   console.log(fuZheHeSuanApi.$state);
-//   // },1000)
-//   function dadas(vmodel, key) {
-//     const list = JSON.parse(JSON.stringify(fuZheHeSuanApi.getFuZhuHeSuanList(key)));
-//     console.log(list);
-//     return h(
-//         {
-//
-//           render(){
-//             return <ElSelect/>
-//           }
-//         }
-//     );
-//   }
-//
-//   const com = defineComponent(() => () =>
-//       <div class={showPopover.value ? 'fu_zhu_he_suan_grid_focus' : ''} style="font-size:10px;height:100%"
-//            onBlur={(e) => ddd(e)}>
-//         <>
-//           <>{() => aaaa()}</>
-//           {fuZhuHeSuanList.map(item => (
-//               <>
-//                 {item.name}:{item.value}
-//                 <br/>
-//               </>
-//           ))}
-//         </>
-//       </div>
-//   );
-//   const pingZhengConfig = usePingZhengConfigStoreWidthOut();
-//   if (!pingZhengConfig.getIsTextModel) {
-//     watch(fuZheHeSuanApi.$state.fuZhuHeSuanList, () => {
-//       const itemsSelect = fuZhuHeSuanList.map(fuZhuHeSuanOne => {
-//         return dadas(fuZhuHeSuanOne, fuZhuHeSuanOne.key);
-//       });
-//
-//       render(h(
-//           {
-//
-//             render(){
-//               return (
-//                   <>
-//                   <ElSelect/>
-//                   </>
-//               )
-//             }
-//           }
-//       ), abcasd.value);
-//     }, {immediate: true, deep: true});
-//   }
-//
-//
-//   function aaaa() {
-//     debugger
-//   }
-//   watch(fuZhuHeSuanList, () => {
-//     render(h(com), colFuZhuHeSuan.value);
-//   }, {immediate: true});
-//
-// }
 
-function focus() {
-  showPopover.value = true;
-}
+
+const instance = getCurrentInstance();
+
+
+const props = defineProps(['modelValue']);
+
+const abcasd = ref();
+const colFuZhuHeSuan = ref();
+let showPopover = ref(false);
+const fuZhuHeSuanSelection=ref(createFuZhuHeSuanSelection(props))
+const modelValue=ref()
+watch(props,()=>{
+  modelValue.value=props.modelValue
+},{immediate:true})
 const {emit} = useContext();
-emit('ref', getCurrentInstance());
 onMounted(() => {
+  renderGridHtml(colFuZhuHeSuan.value,{fuZheHeSuanValue:props.modelValue,showPopover})
+  renderGridPoper(abcasd.value,{fuZheHeSuanValue:props.modelValue,showPopover,fuZhuHeSuanSelection})
+
+});
+
+
+
+function renderGridHtml(mountDom,{fuZheHeSuanValue,showPopover}){
+  render(h({
+    render(){
+      return (
+          <div className={showPopover.value ? 'fu_zhu_he_suan_grid_focus' : ''} style="font-size:10px;height:100%"
+               onBlur={(e) => onBlur(e)}>
+            <>
+              {modelValue.value.map(item => (
+                  <>
+                    {item.name}:{item.text}
+                    <br/>
+                  </>
+              ))}
+            </>
+          </div>
+      )
+    }
+  }), mountDom);
+}
+const selectItems=ref([])
+function fuZhuHeSuanchange(){
+  showPopover.value=false
+  instance.attrs['onUpdate:modelValue'](props.modelValue)
+  emit('fuZhuHeSuanChange')
+}
+function renderGridPoper(mountDom,{showPopover}){
+
+  function selectChange(rowIndex){
+    if(selectItems.value[rowIndex+1]==null){
+      fuZhuHeSuanchange()
+    }else{
+      setTimeout(()=>{
+        selectItems.value[rowIndex+1].$el.click()
+      },100)
+    }
+  }
   render(h(
       {
-
         render(){
           return (
               <>
-                <ElSelect/>
+                {props.modelValue.map(item => {
+                  const itemIndex=props.modelValue.indexOf(item)
+                  return (
+                      <ElSelect  v-model={props.modelValue[itemIndex]}
+                                 ref={(e)=>selectItems.value[itemIndex]=e}
+                                 onChange={()=>selectChange(itemIndex)}>
+                        {
+                          fuZhuHeSuanSelection.value[item.key].map(selectionItem=>{
+                            return (
+                                <ElOption
+                                    key={selectionItem.id}
+                                    label={selectionItem.name}
+                                    value={({...item,text:selectionItem.name,value:selectionItem.id})}/>
+                            )
+                          })
+                        }
+                      </ElSelect>
+                  )
+
+                })}
+                <ElButton onClick={fuZhuHeSuanchange}>确认</ElButton>
+                <ElButton onClick={()=>showPopover.value=false}>放弃</ElButton>
               </>
           )
         }
       }
-  ), abcasd.value);
-  const com=defineComponent(() => () =>
-      <div class={showPopover.value ? 'fu_zhu_he_suan_grid_focus' : ''} style="font-size:10px;height:100%"
-           onBlur={(e) => ddd(e)}>
-        <>
-          1
-          {fuZhuHeSuanList.map(item => (
-              <>
-                {item.name}:{item.value}
-                <br/>
-              </>
-          ))}
-          2
-        </>
-      </div>
-  )
-  render(h(com), colFuZhuHeSuan.value);
-});
+  ), mountDom);
+}
+
+function focus(){
+  showPopover.value=true
+  nextTick(()=>{
+    setTimeout(()=>{
+      selectItems.value[0].$el.click()
+    },100)
+  })
+}
+emit('ref', getCurrentInstance());
 </script>
 <style scoped>
 >>> .abca label {

@@ -17,10 +17,10 @@ const pingZhengButtonStore = usePingZhengButtonWidthOut();
 
 
 export default async function({btnShowList,getFuZhuHeSuanColumnsNameApi,fuZhuHeSuanApiList, zhaiyaoApi, kuaiJiKeMuApi, okApi, backApi, requstModel}:any) {
-    const {createInstanceRow}=pingZhengModelStore
+    // const {createInstanceRow}=pingZhengModelStore
     const model={
         ...requstModel,
-        rows:requstModel.rows.map(createInstanceRow)
+        // rows:requstModel.rows.map(createInstanceRow)
     }
 
     async function reload(){

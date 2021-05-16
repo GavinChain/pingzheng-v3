@@ -17,7 +17,7 @@ export function openAddPingZheng({okApi,backApi}) {
 export async function openShowPingZheng({backApi}) {
     useOpenShow({
         // api:'',
-        model: await queryPingZhengModelByIdApi({id:1},null),
+        model: await queryPingZhengModelByIdApi({id:'PZ0000002'},null),
         zhiDanRen: '机器人01'
     });
 }
@@ -35,7 +35,7 @@ export async function openInsertPingZheng({okApi,backApi}) {
 export async function openEditPingZheng({backApi}) {
     useOpenEdit({
         // api:'',
-        model:  await queryPingZhengModelByIdApi({id:1},null),
+        model:  await queryPingZhengModelByIdApi({id:'PZ0000001'},null),
         zhiDanRen: '机器人01'
     });
 }

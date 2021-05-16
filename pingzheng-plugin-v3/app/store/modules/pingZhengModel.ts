@@ -117,56 +117,66 @@ export const usePingZhengModelStore = defineStore({
     },
 
     actions: {
-
-        createInstanceRow(requireRow) {
-            const instanceRow = {
-                state:reactive({
-                        data: requireRow,
-                        zhiYaoGridRef:{},
-                        kuaiJiKemuGridRef:{},
-                        fuZhuHeSuanGridRef:{},
-                        jieMoneyGirdRef:{},
-                        daiMoneyGirdRef:{},
-                        fuZhuHeSuan: [],
-                        hover: false,
-                }),
-                actions:{
-                    commitZhaiYaoRef(ref){
-                        instanceRow.state.zhiYaoGridRef=ref
-                    },
-                    commitKuaiJiKemuGridRef(ref){
-                        instanceRow.state.kuaiJiKemuGridRef=ref
-                    },
-                    commitFuZhuHeSuanRef(ref){
-                        instanceRow.state.fuZhuHeSuanGridRef=ref
-                    },
-                    commitJieMoneyGridRef(ref){
-                        instanceRow.state.jieMoneyGirdRef=ref
-                    },
-                    commitDaiMoneyGridRef(ref){
-                        instanceRow.state.daiMoneyGirdRef=ref
-                    },
-                    focusFuZhuHeSuan(){
-
-                    }
-                }
-            };
-            function kuaiJiKeMuChange(){
-                alert(1)
-            }
-
-            watch(instanceRow.state.data,(newVal,oldVal)=>{
-                console.log(1111);
-                if(newVal.kuaiJiKeMuCode!=oldVal.kuaiJiKeMuCode){
-                    kuaiJiKeMuChange()
-                }
+        createRow(){
+            this.getPingZhengModel.rows.push({
+                'zhaiYao': '1',
+                'kuaiJiKeMuCode': '',
+                'kuaiJiKeMuFullName': '',
+                'jieMoney': '0.00',
+                'daiMoney': '0.00',
+                'kuaiJiKeMuPath': ''
             })
-            return {
-                ...instanceRow.state.data,
-                ...instanceRow.state,
-                ...instanceRow.actions
-            };
         },
+        //
+        // createInstanceRow(requireRow) {
+        //     const instanceRow = {
+        //         state:reactive({
+        //                 data: requireRow,
+        //                 zhiYaoGridRef:{},
+        //                 kuaiJiKemuGridRef:{},
+        //                 fuZhuHeSuanGridRef:{},
+        //                 jieMoneyGirdRef:{},
+        //                 daiMoneyGirdRef:{},
+        //                 fuZhuHeSuan: [],
+        //                 hover: false,
+        //         }),
+        //         actions:{
+        //             commitZhaiYaoRef(ref){
+        //                 instanceRow.state.zhiYaoGridRef=ref
+        //             },
+        //             commitKuaiJiKemuGridRef(ref){
+        //                 instanceRow.state.kuaiJiKemuGridRef=ref
+        //             },
+        //             commitFuZhuHeSuanRef(ref){
+        //                 instanceRow.state.fuZhuHeSuanGridRef=ref
+        //             },
+        //             commitJieMoneyGridRef(ref){
+        //                 instanceRow.state.jieMoneyGirdRef=ref
+        //             },
+        //             commitDaiMoneyGridRef(ref){
+        //                 instanceRow.state.daiMoneyGirdRef=ref
+        //             },
+        //             focusFuZhuHeSuan(){
+        //
+        //             }
+        //         }
+        //     };
+        //     function kuaiJiKeMuChange(){
+        //         alert(1)
+        //     }
+        //
+        //     watch(instanceRow.state.data,(newVal,oldVal)=>{
+        //         console.log(1111);
+        //         if(newVal.kuaiJiKeMuCode!=oldVal.kuaiJiKeMuCode){
+        //             kuaiJiKeMuChange()
+        //         }
+        //     })
+        //     return {
+        //         ...instanceRow.state.data,
+        //         ...instanceRow.state,
+        //         ...instanceRow.actions
+        //     };
+        // },
         async commitPingZhengModel(pingZhengModel: any) {
             const thisStore = usePingZhengModelStoreWidthOut();
             thisStore.pingZhengModel = pingZhengModel;

@@ -3,7 +3,7 @@ import {ref} from 'vue';
 
 export function showByModel(logs) {
     const result=ref(null)
-    return {
+    const params= {
         open: () => {
             openShowPingZheng({
                 backApi({pingZhengModel}) {
@@ -15,11 +15,13 @@ export function showByModel(logs) {
         result,
         name: '查看凭证(凭证模型)'
     };
+    // params.open()
+    return params
 }
 
 export function showByNum(logs) {
     const result=ref('')
-    return {
+    const parms={
         open: () => {
             openAddPingZheng({
                 okApi({pingZhengModel}) {
@@ -37,4 +39,5 @@ export function showByNum(logs) {
         result,
         name: '查看凭证(通过编码)'
     };
+    return parms
 }

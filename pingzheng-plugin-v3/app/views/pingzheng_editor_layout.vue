@@ -100,7 +100,7 @@
 import {onMounted, computed, ref, render, h} from 'vue';
 import {usePingZhengModelStoreWidthOut} from '../store/modules/pingZhengModel';
 import {useShowPingZhengStoreWidthOut} from '../store/modules/showPingZheng';
-import {openPrintPopup} from '../../../plugins_backup/pingzheng/views/print/print_popup';
+// import {openPrintPopup} from '../../../plugins_backup/pingzheng/views/print/print_popup';
 import {usePingZhengPrintStoreWidthOut} from '../store/modules/pingzhengPrint';
 const pingZhengModelStore = usePingZhengModelStoreWidthOut();
 const showPingZhengStore = useShowPingZhengStoreWidthOut();

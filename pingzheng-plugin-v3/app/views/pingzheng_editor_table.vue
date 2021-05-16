@@ -29,103 +29,24 @@
           <ul class="moneyGrid" style="height:15px;text-align: center;width:100.95%"><MoneyGrid/></ul>
         </li>
       </ul>
-      <div class="voucher-item" style="overflow-y:auto;height:241px;clear: both">
+      <div class="voucher-item screen">
+
         <ul class="table_body" :style="showPingZheng?'pointer-events: none;':''">
+          <template   v-for="(row,rowIndex) in pingZhengModelStore.getPingZhengModel.rows">
 
-          <ul
-              v-for="(row,i) in pingZhengModelStore.getPingZhengModel.rows"
-              @mouseover="pingZhengRowHover[i]=true"
-              @mouseout="pingZhengRowHover[i]=false"
-              class="firstRow"
-              style="position: relative"
-          >
-            <div>
-              <div
-                  style="width:0;float:left;padding:0;display:block;border:0;left: 0;position:absolute;-moz-user-select:none;"
-                  colspan="0"
-                  unselectable="on"
-                  onselectstart="return false;"
-              >
-                <div
-                    v-show="row.hover"
-                    @click="addRowButton(i)"
-                    style="    position: absolute;
-    left: -49px;width:50px;height: 60px;"
-                >
-                  <img  class="subtractionImg">
-                </div>
-              </div>
-            </div>
-            <li class="col-serial">
-              {{ i + 1 }}
-            </li>
-            <li class="col1">
-              <ZhaiYaoGrid
-                  @ref="row.commitZhaiYaoRef"
-                  v-model="row.zhaiYao"
-                  :abstracts="abstracts"
-                  @change="focusKuaiJiKeMuGrid(i)"
-              />
-            </li>
-            <li class="col2">
-              <KuaiJiKeMuGrid
-                  @ref="row.commitKuaiJiKemuGridRef"
+            <PingzhengRow
 
-                  v-if="subs.length"
-                  :val="row.kuaiJiKeMuText"
-                  :update-page="updatePage"
-                  :row-index="i+1"
-                  :assist-val="assist[i]"
-                  :iyear="iyear"
-                  :subs="subs"
-                  @blur="kuaiJiKeMuChangeBlur(row)"
-                  @kuaiJiKeMuChange="kuaiJiKeMuChange(row,$event)"
-              />
-            </li>
+                @ref="pingZhengRowsRef[rowIndex]=$event"
+                v-model="pingZhengModelStore.getPingZhengModel.rows[rowIndex]"
+                :rowIndex="rowIndex"
+                @mouseover="pingZhengRowHover[rowIndex]=true"
+                @mouseout="pingZhengRowHover[rowIndex]=false"
+                @next="rowNext({rowIndex,zhaiYao:row. zhaiYao})"
+            ></PingzhengRow>
+          </template>
 
-            <li class="col3" style="" >
-              <FuZhuHeSuanGrid   @ref="row.commitFuZhuHeSuanRef" v-model="row.fuZhuHeSuan"></FuZhuHeSuanGrid>
-            </li>
-            <li class="col4"/>
-            <li class="col-jie" style="position: relative">
-              <JieMoneyGrid v-model="row.jieMoney"
-                            @ref="row.commitJieMoneyGridRef"
-                            @money-change="dGrid[i].setupState.focus()"
-                            @input="row.daiMoney='0.00'"/>
-            </li>
-            <li class="col-dai" style="position: relative">
-              <DaiMoneyGrid v-model="row.daiMoney"
-                            :equals-event="()=>15"
-                            @ref="row.commitDaiMoneyGridRef"
-                            @money-change="zhaiYaoGrid[i+1]!=null?zhaiYaoGrid[i+1].setupState.focus():''"
-                            @input="clearRightVal"/>
-            </li>
-              <div
-                  style="width:0;padding:0;display:block;border:0;position:absolute;right: 0;-moz-user-select:none;"
-                  colspan="0"
-                  unselectable="on"
-                  onselectstart="return false;"
-              >
-                <div
-                    v-show="pingZhengRowHover[i]"
-                    @click="deleteRowButton(i)"
-                    style="    width: 31px;
-    height: 60px;
-    position: absolute;
-    right: -32px;
-    text-align: right;
-    cursor: pointer;"
-                >
-                  <img
-                      class="addImg"
-                      style="width:20px;margin-top:16px;-moz-user-select:none;"
-                      unselectable="on"
-                      onselectstart="return false;"
-                  >
-                </div>
-              </div>
-            <li style="clear: both"/>
-          </ul>
+
+
           <li style="clear:both;"/>
         </ul>
       </div>
@@ -161,7 +82,7 @@
 </template>
 <script setup>
 import jquery from 'jquery';
-import {computed, onBeforeUpdate, onMounted, ref, watch} from 'vue';
+import {computed, nextTick, onBeforeUpdate, onMounted, ref, watch} from 'vue';
 // import {moneyHelper} from '../util/boozjs-lang/money-util';
 import apiProcess from '../data/data';
 import fuZhuHeSuanHelper, {clearFuZhuHeSuan, assignFuZuHeSuan} from '../helper/fu_zhu_he_suan_Helper';
@@ -175,7 +96,7 @@ import {useShowPingZhengStoreWidthOut} from '../store/modules/showPingZheng';
 import layer from '../util/boozjs-layer/boozjs-layer.es';
 const pingZhengModelStore = usePingZhengModelStoreWidthOut();
 const showPingZhengStore = useShowPingZhengStoreWidthOut();
-import MoneyGrid from './table/money_grid.vue'
+import MoneyGrid from './components/money_grid.vue'
 import ZhaiYaoGrid from './table/column-zhaiYao.vue'
 import KuaiJiKeMuGrid from './table/column-kuaiJiKeMu.vue'
 import JieMoneyGrid from './table/column-money-grid.vue'
@@ -185,7 +106,7 @@ import {usePingZhengApiWidthOut} from '../store/modules/pingZhengApi';
 import {useFuZhuHeSuanStoreWidthOut} from '../store/modules/fuZhuHeSuan';
 const pingZhengApiStore=usePingZhengApiWidthOut()
 const fuZhuHeSuanMuStore=useFuZhuHeSuanStoreWidthOut()
-
+const pingZhengRowsRef=ref([])
 import {toMoneyStr2} from '../util/boozjs-lang/money-util';
 // import {apiDataCastFuZhuHeSuanModel} from '../../plugins_backup/pingzheng/helper/fu_zhu_he_suan_Helper';
 // const pingZhengModel = ref(pingZhengModelStore.getPingZhengModel);
@@ -194,6 +115,7 @@ const ChineseTotalAmount = ref('零元整');
 const jieTotalAmount = ref(5);
 const daiTotalAmount = ref(5);
 const showPingZheng = computed(() => showPingZhengStore.getShowPingZheng);
+import PingzhengRow  from './table/pingzheng-row'
 const urlPath="/ysd"
 watch(pingZhengModelStore.getPingZhengModel.rows, (newVal) => {
   let thisJieTotalAmount = 0;
@@ -216,9 +138,9 @@ watch(pingZhengModelStore.getPingZhengModel.rows, (newVal) => {
 
     // this.billSubjectMoneys[newVal[i].kuaiJiKeMuText.split(" ")[0]]['j'] += parseFloat(j.toFixed(2))
     // this.billSubjectMoneys[newVal[i].kuaiJiKeMuText.split(" ")[0]]['d'] += parseFloat(d.toFixed(2))
-    thisJieTotalAmount = accAdd(thisJieTotalAmount, newVal[i].data.jieMoney);
+    thisJieTotalAmount = accAdd(thisJieTotalAmount, newVal[i].jieMoney);
     formatMoneyAPI(String(thisJieTotalAmount));
-    thisDaiTotalAmount = accAdd(thisDaiTotalAmount, newVal[i].data.daiMoney);
+    thisDaiTotalAmount = accAdd(thisDaiTotalAmount, newVal[i].daiMoney);
   }
   if (thisJieTotalAmount == 0) {
     thisChineseTotalAmount = '零元整';
@@ -266,6 +188,7 @@ const voucherDrafts = [];
 const showPageAddKM = false;              // 显示科目页
 const showPage = true;
 const isFuZhuHeSuan = computed(()=>{
+  return pingZhengModelStore.getPingZhengModel.rows.filter(item=>item.fuZhuHeSuan!=null).length>0
   // // 部门
   // return item.fzDept != null ||
   //     // 个人往来
@@ -278,9 +201,9 @@ const isFuZhuHeSuan = computed(()=>{
   //     item.fzCunHuo != null ||
   //     // 项目
   //     item.fzXiangMuMulu != null;
-  const rowListFuZhuHeSuan=pingZhengModelStore.getRowListFuZhuHeSuan
-  const rowFuZhuHeSuanFilter=(rowFuZhuHeSuan)=>rowFuZhuHeSuan.length!=0
-  return rowListFuZhuHeSuan.filter(rowFuZhuHeSuanFilter).length>0
+  // const rowListFuZhuHeSuan=pingZhengModelStore.getPingZhengModel.rows
+  // const rowFuZhuHeSuanFilter=(row)=>row.fuZhuHeSuan.length!=0
+  // return rowListFuZhuHeSuan.filter(rowFuZhuHeSuanFilter).length>0
   // const fuZhuHeSuan=pingZhengModelStore.getRowListFuZhuHeSuan.filter(item => {
   //
   //
@@ -1626,6 +1549,14 @@ function kuaiJiKeMuChangeBlur(i){
   // },500)
 
 }
+async function rowNext({rowIndex,zhaiYao}){
+  if(pingZhengRowsRef.value[rowIndex+1]==null){
+    pingZhengModelStore.createRow()
+    await nextTick()
+  }
+
+  pingZhengRowsRef.value[rowIndex+1].setupState.newLineHandle(zhaiYao)
+}
 </script>
 <style scoped>
 
@@ -1673,3 +1604,11 @@ function kuaiJiKeMuChangeBlur(i){
 }
 </style>
 <style src="../assets/styles/boozui/boozui.css" scoped></style>
+<style scoped>
+.voucher-item.default{
+  overflow-y:auto;height:241px;clear: both
+}
+.voucher-item.screen{
+  overflow-y:auto;height:741px;clear: both
+}
+</style>

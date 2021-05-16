@@ -6,7 +6,7 @@
     <textarea
         @keydown="checkEnter(event)"
         ref="zhaiYaoInput"
-        v-model="textareaVal"
+        v-model="modelValue"
         onclick="javascript:this.focus();this.select();"
         @click="textareaClick"
         @blur="textareaBlur"
@@ -14,7 +14,7 @@
         @keydown.up="textareaKeyUp"
         @keydown.down="textareaKeyDown"
         @keyup.enter.stop="setVal()"
-        @input="chooseIndex=-1,listFitter($event.target),setTimeout(function(){$refs.dataList.value.style.display='block'}.bind(this))"
+        @input="textareaInput"
         class="ulToggle"
         style="box-sizing:border-box;background:inherit;display:block;font-size:15px;width:100%;height:100%;color:black;font-weight:800"
     />
@@ -53,50 +53,54 @@ import {usePingZhengModelStoreWidthOut} from '../../store/modules/pingZhengModel
 const {emit} = useContext();
 const zhaiYaoInput = ref();
 const dataList = ref(null);
-const {modelValue}=defineProps(['modelValue'])
+const props=defineProps(['modelValue'])
+const modelValue=ref(props.modelValue)
 const val=ref(modelValue.toString())
 const zhaiYaoStore=useZhaiYaoStoreWidthOut()
 const zhaiYaoList = computed(() => zhaiYaoStore.getZhaiYaoList);
 
+watch(props,()=>{
+  console.log(props.modelValue)
+  modelValue.value=props.modelValue
+})
 function setVal() {
   if (this.chooseIndex != -1) {
     dataList.value.getElementsByTagName('LI')[this.chooseIndex].click();
   } else {
     zhaiYaoInput.value.blur();
   }
-    emitChange('change')
+    emitChange()
 }
 
 function enter(val) {
-  if (textareaVal.value == '') {
-    textareaVal.value = val;
+  if (modelValue.value == '') {
+    modelValue.value = val;
   }
 
   zhaiYaoInput.value.focus();
 }
 
 // 过滤列表
-function listFitter(obj) {
-  let val = obj.value.trim();
+function listFitter() {
+  let val = modelValue.value;
   let bol = false;
-  for (let i in zhaiYaoList) {
+  for (let i in zhaiYaoList.value) {
     if (val == '') {
-      zhaiYaoList[i].hide = false;
+      zhaiYaoList.value[i].hide = false;
     } else {
-      if (zhaiYaoList[i].accabname.split(val).length > 1 || PinyinMatch.match(zhaiYaoList[i].accabname, val) != false) {
+      if (zhaiYaoList.value[i].accabname.split(val).length > 1 || PinyinMatch.match(zhaiYaoList.value[i].accabname, val) != false) {
         bol = true;
-        zhaiYaoList[i].hide = false;
+        zhaiYaoList.value[i].hide = false;
       } else {
-        zhaiYaoList[i].hide = true;
+        zhaiYaoList.value[i].hide = true;
       }
     }
-    this.$set(zhaiYaoList, i, zhaiYaoList[i]);
   }
-  if (bol == false) {
-    this.showAll = true;
-  } else {
-    this.showAll = false;
-  }
+  // if (bol == false) {
+  //   this.showAll = true;
+  // } else {
+  //   this.showAll = false;
+  // }
 }
 
 function textareaClick() {
@@ -113,7 +117,6 @@ function onDataListPostion() {
 }
 
 
-const textareaVal = ref();
 const dataListShow = false;
 const showAll = false;
 const chooseIndex = ref(-1);
@@ -152,9 +155,10 @@ watch(chooseIndex, function(newVal) {
 setTimeout(function() {
   onDataListPostion();
 }.bind(this));
-
+const instance= getCurrentInstance()
 function emitChange(){
-  emit('change',textareaVal.value)
+  instance.attrs['onUpdate:modelValue'](modelValue.value)
+  emit('zhaiYaoChange',modelValue.value)
 }
 function textareaKeyUp() {
   if (chooseIndex.value > 0) chooseIndex.value--;
@@ -170,13 +174,20 @@ function textareaBlur() {
   dataList.value.style.display = 'none';
 }
 function ulLiClick(zhaiYao){
-  textareaVal.value=zhaiYao.accabname
+  modelValue.value=zhaiYao.accabname
   zhaiYaoInput.value.blur()
+  emitChange()
 }
 function focus(){
   zhaiYaoInput.value.focus()
 }
-emit('ref',getCurrentInstance())
+
+function textareaInput(){
+  chooseIndex.value=-1
+  listFitter()
+  setTimeout(function(){dataList.value.style.display='block'})
+}
+emit('ref',instance)
 </script>
 <style src="./column-zhaiYao.css"></style>
 

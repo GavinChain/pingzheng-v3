@@ -11,7 +11,7 @@
       <template #reference>
         <textarea
             :class="isNotFind?'isNotFind':''"
-            ref="subInput"
+            ref="kuaiJiKeMuInput"
             v-model="textareaVal"
             @focus="textareaFocus"
             @blur="textareaBlur"
@@ -141,6 +141,7 @@ const api = {
 };
 
 const props = defineProps([
+    'modelValue',
   'rowIndex',
   'val',
   'subBillMoney',
@@ -151,6 +152,9 @@ const props = defineProps([
   'updatePage'
 ]);
 const textareaVal = ref(props.val);
+watch(props,()=>{
+  textareaVal.value=props.modelValue
+},{immediate:true})
 const dataListShow = false;
 const addSubjectPageShow = false;
 const chooseIndex = ref(0);
@@ -244,14 +248,14 @@ function listFitter(obj) {
   }
 }
 const {emit} = useContext();
-const subInput = ref();
+const kuaiJiKeMuInput = ref();
 
 // 监听位置改变,同步位置
 function onDataListPostion(scrollTop) {
   if (dataList.value == null) return;
   // dataList.value.style.display = 'none'
-  dataList.value.style.left = subInput.value.getBoundingClientRect().x;
-  dataList.value.style.top = (subInput.value.getBoundingClientRect().y + subInput.value.getBoundingClientRect().height) + 'px';
+  dataList.value.style.left = kuaiJiKeMuInput.value.getBoundingClientRect().x;
+  dataList.value.style.top = (kuaiJiKeMuInput.value.getBoundingClientRect().y + kuaiJiKeMuInput.value.getBoundingClientRect().height) + 'px';
 }
 
 function getDescribe(ccode) {
@@ -321,7 +325,11 @@ function ulLiClick(kuaiJiKeMu,e) {
 }
 
 function focus(){
-  subInput.value.focus()
+  setTimeout(()=>{
+      kuaiJiKeMuInput.value.focus()
+      kuaiJiKeMuInput.value.select()
+
+  },100)
 }
 
 emit('ref', getCurrentInstance());

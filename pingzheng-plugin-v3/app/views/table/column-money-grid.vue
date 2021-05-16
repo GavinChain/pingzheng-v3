@@ -1,6 +1,4 @@
 <template>
-  <div
-  >
               <textarea
                   ref="textarea"
                   v-show="showTextEditor"
@@ -15,12 +13,11 @@
     <MoneyGrid v-show="!showTextEditor" @click="focus">
       {{ moneyInputStr }}
     </MoneyGrid>
-  </div>
 </template>
 <script setup>
 import {defineProps, getCurrentInstance, nextTick, onBeforeUpdate, onMounted, ref, useContext} from 'vue';
 import jquery from 'jquery';
-import MoneyGrid from '../table/money_grid.vue'
+import MoneyGrid from '../components/money_grid.vue'
 import {checkEnter} from '../../util/key';
 import {toMoneyInputStr} from '../../util/boozjs-lang/money-util';
 
@@ -33,7 +30,10 @@ onBeforeUpdate((a,b,c)=>{
 })
 function focus(e) {
   showTextEditor.value=true
-  setTimeout(()=> textarea.value.focus(),100)
+  setTimeout(()=> {
+    textarea.value.focus()
+    textarea.value.select()
+  },100)
 }
 
 const {emit, slots} = useContext();
@@ -88,6 +88,10 @@ function textareaEnter(e){
   textBlur()
   emitChange()
 }
+function clear(){
+  moneyInputStr.value='0.00'
+  instance.attrs['onUpdate:modelValue'](moneyInputStr.value)
+}
 
 
 // onMounted(()=>{
@@ -95,4 +99,8 @@ function textareaEnter(e){
 // })
 emit('ref',instance)
 </script>
-
+<style scoped>
+.textx{
+  display: block;
+}
+</style>
