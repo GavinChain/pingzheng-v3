@@ -6,6 +6,7 @@
         width="380px"
         trigger="manual"
         v-model:visible="showPopover"
+        popper-class="helloKuaiJiKeMu"
     >
       <addSubjectPage v-model="textareaVal" @ok="showPopover=false" @cancel="showPopover=false"/>
       <template #reference>
@@ -338,5 +339,15 @@ emit('ref', getCurrentInstance());
 <style>
 .isNotFind{
   color:red !important;
+}
+.helloKuaiJiKeMu{
+  padding:0;
+  color:white;
+  background:#67c082 !important;
+}
+.helloKuaiJiKeMu .el-popover__title{
+  padding:0;
+  color:white !important;
+  background:#67c082 !important;
 }
 </style>

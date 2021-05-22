@@ -12,12 +12,13 @@
     </li>
     <li class="col-jie" style="position: relative">
       <JieMoneyGrid v-model="row.jieMoney"
+                    :equals-event="()=>row.jieMoney"
                     @ref="jieMoneyGridRef=$event"
                     @money-change="jieMoneyChange"/>
     </li>
     <li class="col-dai" style=" position: relative">
       <DaiMoneyGrid v-model="row.daiMoney"
-                    :equals-event="()=>15"
+                    :equals-event="()=>row.daiMoney"
                     @ref="daiMoneyGridRef=$event"
                     @money-change="daiMoneyChange"/>
     </li>

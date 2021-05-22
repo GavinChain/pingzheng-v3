@@ -1,14 +1,14 @@
 <template>
   <div
       class="subject_add"
-      style="position:relative"
+      style="position:relative;color:white"
   >
     <div
-        style="width:30%;height:70%;width:420px;z-index:500;border-radius: 10px"
+        style="height:70%;z-index:500;border-radius: 10px"
     >
       <div
           class="dy_ul_list"
-          style="z-index:9999999999999999999999999;background:white;height: 280px;width:100%"
+          style="z-index:9999999999999999999999999;height: 280px;width:100%"
       >
 
         <ul

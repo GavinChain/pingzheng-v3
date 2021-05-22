@@ -72,7 +72,7 @@ export function createBottomRihtInstance(params: any) {
 
         // pingZhengApi.okApi(pingZhengModelStore.getPingZhengModel)
         return () => <>
-            {filterBtnList(btnList,btnShowList).map(item => <div onClick={item.useEvent}>{item.name}</div>)}
+            {filterBtnList(btnList,btnShowList).map(item => <button class="dy_button" onClick={item.useEvent}>{item.name}</button>)}
         </>;
     });
 }

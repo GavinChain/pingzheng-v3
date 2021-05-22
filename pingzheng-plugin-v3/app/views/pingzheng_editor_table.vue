@@ -29,7 +29,7 @@
           <ul class="moneyGrid" style="height:15px;text-align: center;width:100.95%"><MoneyGrid/></ul>
         </li>
       </ul>
-      <div class="voucher-item screen">
+      <div class="voucher-item default">
 
         <ul class="table_body" :style="showPingZheng?'pointer-events: none;':''">
           <template   v-for="(row,rowIndex) in pingZhengModelStore.getPingZhengModel.rows">
@@ -1609,6 +1609,6 @@ async function rowNext({rowIndex,zhaiYao}){
   overflow-y:auto;height:241px;clear: both
 }
 .voucher-item.screen{
-  overflow-y:auto;height:741px;clear: both
+  overflow-y:auto;height:541px;clear: both
 }
 </style>

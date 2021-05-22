@@ -82,9 +82,14 @@
             <slot/>
           </div>
         </div>
-        <div style="width:1060px;margin:0 auto;padding-top:10px">
+        <div style="width:1100px;position:relative;margin:0 auto;padding-top:10px">
           <span style="margin-top:5px;color:#d7d7d7">制单人：{{ pingZhengModel.props.zdr }}</span>
-          <slot name="bottomRightBtns"/>
+          <div style="    width: 500px;
+    position: absolute;
+    right: 0px;
+    text-align: right;
+    bottom: -20px;
+    font-size: 13px;"><slot name="bottomRightBtns"/> </div>
         </div>
         <div
             class="noselect"
@@ -160,10 +165,7 @@ async function openPrint() {
 
 }
 </script>
-<style scoped>
-@import "../assets/styles/ping_zheng_editor_layout.css";
-@import "../assets/styles/ping_zheng_editor_layout.less.css";
-</style>
+
 <style scoped>
 #pageEditZoom {
   border-radius: 5px;

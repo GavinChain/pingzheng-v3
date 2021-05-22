@@ -1,10 +1,10 @@
 .el-select-dropdown.el-popper{
     z-index:99999999999 !important;
 }
-.el-popover.el-popper{
-    background: #95d095;
+/*.el-popover.el-popper{*/
+/*    background: #95d095;*/
 
-}
+/*}*/
 .fuzhuhesuan-form-item label{
     text-align: justify !important;
     text-align-last: justify !important;

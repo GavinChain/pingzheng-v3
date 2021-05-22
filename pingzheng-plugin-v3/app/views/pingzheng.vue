@@ -1,12 +1,12 @@
 <template>
-  <PingzhengScreen>
+  <PingzhengLayer>
     <PingZhengLayOut>
       <PingZhengTable></PingZhengTable>
       <template v-slot:bottomRightBtns>
         <div ref="bottomRightInstanceRef"></div>
       </template>
     </PingZhengLayOut>
-  </PingzhengScreen>
+  </PingzhengLayer>
 
 </template>
 <script setup>
@@ -17,6 +17,8 @@ import {defineProps, onMounted, ref, watch, unref, render, h, getCurrentInstance
 import {usePingZhengModelStoreWidthOut} from '../store/modules/pingZhengModel';
 import {usePingZhengApiWidthOut} from '../store/modules/pingZhengApi';
 import {usePingZhengButtonWidthOut} from '../store/modules/pingZhengButton';
+import PingzhengLayer from "../layout/pingzheng-layer";
+
 const pingZhengApi=usePingZhengApiWidthOut()
 const pingZhengModelStore=usePingZhengModelStoreWidthOut()
 const props=defineProps(['modelValue'])

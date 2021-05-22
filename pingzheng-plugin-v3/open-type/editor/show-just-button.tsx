@@ -27,7 +27,7 @@ export default defineComponent(() => {
     // pingZhengApi.okApi(pingZhengModelStore.getPingZhengModel)
     return ()=> (
         <>
-            <div onClick={backEvent}>放弃</div>
+            <button class="dy_button" onClick={backEvent}>放弃</button>
         </>
     );
 });

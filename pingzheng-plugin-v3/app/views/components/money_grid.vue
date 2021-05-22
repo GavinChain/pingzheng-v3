@@ -13,53 +13,53 @@ const abc = ref(null);
 const moneyBase = ['百', '十', '亿', '千', '百', '十', '万', '千', '百', '十', '元', '角', '分'];
 
 // 转换金额格式
-function formatMoneyAPI(moneyStr) {
-  moneyStr = String(moneyStr);
-  moneyStr = moneyStr == null ? '' : moneyStr;
-  if (moneyStr == 0) moneyStr = '';
-  if (moneyStr.split('.').length > 1 && moneyStr.split('.')[1] == 0) {
-    moneyStr = moneyStr.split( '\\.')[0];
+function formatMoneyAPI(moneyArr) {
+  moneyArr = String(moneyArr);
+  moneyArr = moneyArr == null ? '' : moneyArr;
+  if (moneyArr == 0) moneyArr = '';
+  if (moneyArr.split('\.').length > 1 && moneyArr.split('\.')[1] == 0) {
+    moneyArr = moneyArr.split('\.')[0];
   }
-  moneyStr = String(moneyStr).split('\\.');
-  if (moneyStr.length > 1) {
-    let empty = [];
-    if (parseInt(moneyStr[0]) < 0) {
-      moneyStr[0] = moneyStr[0].substring(1, moneyStr[0].length);
+  moneyArr = String(moneyArr).split('\.');
+  if (moneyArr.length > 1) {
+    var empty = [];
+    if (parseInt(moneyArr[0]) < 0) {
+      moneyArr[0] = moneyArr[0].substring(1, moneyArr[0].length);
     }
-    var num = moneyStr[0].split('');
+    var num = moneyArr[0].split('');
     for (let i = 0; i < Object.getOwnPropertyNames(moneyBase).length - 2 - num.length - 1; i++) {
       empty.push('');
     }
-    let float = moneyStr[1].split('');
+    let float = moneyArr[1].split('');
     if (float.length == 1) {
       float.push('0');
     }
     if (float[float.length - 1] == '\n') {
       float.pop();
     }
-    moneyStr = empty.concat(num.concat(float));
+    moneyArr = empty.concat(num.concat(float));
   } else {
-    let empty = [];
-    if (parseInt(moneyStr[0]) < 0) {
-      moneyStr[0] = moneyStr[0].substring(1, moneyStr[0].length);
+    var empty = [];
+    if (parseInt(moneyArr[0]) < 0) {
+      moneyArr[0] = moneyArr[0].substring(1, moneyArr[0].length);
     }
-    let num = moneyStr[0].split('');
+    var num = moneyArr[0].split('');
     if (num[num.length - 1] == '\n') {
       num.pop();
     }
     for (let i = 0; i < Object.getOwnPropertyNames(moneyBase).length - 2 - num.length - 1; i++) {
       empty.push('');
     }
-    if (!moneyStr[0] == '') {
+    if (!moneyArr[0] == '') {
       num.push('0');
       num.push('0');
     } else {
       num.push('');
       num.push('');
     }
-    moneyStr = empty.concat(num);
+    moneyArr = empty.concat(num);
   }
-  return moneyStr;
+  return moneyArr;
 }
 
 const {emit} = useContext();
@@ -115,6 +115,8 @@ const bbbbb=() => {
   }
   const text = slots.default()[0].children;
   const moneyArr = (formatMoneyAPI(text));
+  console.log(text)
+  console.log(moneyArr)
   const isNeg = text < 0;
   render(h('ul',
       {
